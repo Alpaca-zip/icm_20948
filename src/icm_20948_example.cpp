@@ -12,9 +12,9 @@ void ICM_20948_EXAMPLE::init(){
 }
 
 void ICM_20948_EXAMPLE::monitor_imu_callback(const sensor_msgs::Imu& imu_msg){
-  ROS_INFO("quat_w: %f, quat_x: %f, quat_y: %f, quat_z: %f", imu_msg.orientation.w, imu_msg.orientation.x, imu_msg.orientation.y, imu_msg.orientation.z);
-  ROS_INFO("acc_x: %f, acc_y: %f, acc_z: %f", imu_msg.linear_acceleration.x, imu_msg.linear_acceleration.y, imu_msg.linear_acceleration.z);
-  ROS_INFO("gyro_x: %f, gyro_y: %f, gyro_z: %f", imu_msg.angular_velocity.x, imu_msg.angular_velocity.y, imu_msg.angular_velocity.z);
+  //ROS_INFO("quat_w: %f, quat_x: %f, quat_y: %f, quat_z: %f", imu_msg.orientation.w, imu_msg.orientation.x, imu_msg.orientation.y, imu_msg.orientation.z);
+  //ROS_INFO("acc_x: %f, acc_y: %f, acc_z: %f", imu_msg.linear_acceleration.x, imu_msg.linear_acceleration.y, imu_msg.linear_acceleration.z);
+  //ROS_INFO("gyro_x: %f, gyro_y: %f, gyro_z: %f", imu_msg.angular_velocity.x, imu_msg.angular_velocity.y, imu_msg.angular_velocity.z);
 
   q2sqr = imu_msg.orientation.y * imu_msg.orientation.y;
 
