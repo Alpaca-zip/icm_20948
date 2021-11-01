@@ -1,0 +1,5 @@
+<launch>
+  <node name="icm_20948_example" pkg="icm_20948" type="icm_20948_example" output="screen"/>
+  <arg name="rvizconfig" default="$(find icm_20948)/rviz/pupbot.rviz" />
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true"/>
+</launch>
