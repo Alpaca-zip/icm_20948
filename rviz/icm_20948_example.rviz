@@ -5,6 +5,7 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
+        - /TF1/Frames1
       Splitter Ratio: 0.5
     Tree Height: 623
   - Class: rviz/Selection
@@ -57,9 +58,9 @@ Visualization Manager:
       Frames:
         All Enabled: false
         base_link:
-          Value: true
-        imu_link:
           Value: false
+        imu_link:
+          Value: true
       Marker Alpha: 1
       Marker Scale: 1
       Name: TF
@@ -76,7 +77,7 @@ Visualization Manager:
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: imu_link
+    Fixed Frame: base_link
     Frame Rate: 30
   Name: root
   Tools:
@@ -116,9 +117,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.785398006439209
+      Pitch: 0.7603980898857117
       Target Frame: <Fixed Frame>
-      Yaw: 0.785398006439209
+      Yaw: 1.0203980207443237
     Saved: ~
 Window Geometry:
   Displays:
