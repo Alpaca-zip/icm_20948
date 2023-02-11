@@ -1,5 +1,5 @@
 # ROS driver for the ICM-20948 
-[![](https://img.shields.io/badge/ROS-Noetic-brightgreen.svg)](https://github.com/Alpaca-zip/PupBot)
+[![](https://img.shields.io/badge/ROS-Noetic-brightgreen.svg)](https://github.com/Alpaca-zip/icm_20948)
 ## 1 Installation
 ### 1.1 Install ROS package on PC 
 ```
@@ -15,7 +15,7 @@ Get the latest version from the download page.
 https://www.arduino.cc/en/software
 ## 2 For Seeeduino Xiao 
 ### 2.1 ICM-20948 interfacing with Seeeduino Xiao 
-<img src="https://github.com/Alpaca-zip/icm_20948/blob/main/ICM-20948.png" width="320px">
+<img src="https://user-images.githubusercontent.com/84959376/218235948-b36ffe70-4e4e-4186-acaf-ef2bd89b3470.png" width="320px">
 
 ### 2.2 Preferences 
 After Arduino IDE is run, click File -> Preferences in the top menu of the IDE. When the Preferences window appears, copy and paste following link to the Additional Boards Manager URLs textbox. 
@@ -63,9 +63,9 @@ To run the node with a different port, for example on /dev/ttyACM0, you must spe
 $ roslaunch icm_20948 icm_20948_example.launch PORT_NAME:=/dev/ttyACM0
 ```
 If the node is successfully launched, the terminal will print below messages and RViz will be opened. 
-<img src="https://github.com/Alpaca-zip/icm_20948/blob/main/Terminal.png" width="600px">
+<img src="https://user-images.githubusercontent.com/84959376/218236009-1a6c6516-e736-4eda-9435-49ad39b2b2dc.png" width="600px">
 
-<img src="https://github.com/Alpaca-zip/icm_20948/blob/main/RViz.png" width="600px">
+<img src="https://user-images.githubusercontent.com/84959376/218236019-cbb6aa03-f029-441e-b5d7-e7cca034c700.png" width="600px">
 
 If you want to see other IMU data, you will need to: 
 
