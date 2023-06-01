@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  <arg name="port" default="/dev/ttyACM0"/>
+  <arg name="time_out" default="0.5"/>
+  <arg name="baudrate" default="115200"/>
+  <arg name="imu_topic" default="imu"/>
+  <arg name="frame_id" default="imu_link"/>
+  <arg name="debug" default="false"/>
+  <arg name="rviz_config" default="$(find icm_20948)/rviz/imu.rviz"/>
+  <!-- Imu node -->
+  <node name="imu_node" pkg="icm_20948" type="imu_node.py" output="screen">
+    <param name="port" value="$(arg port)"/>
+    <param name="time_out" value="$(arg time_out)"/>
+    <param name="baudrate" value="$(arg baudrate)"/>
+    <param name="imu_topic" value="$(arg imu_topic)"/>
+    <param name="frame_id" value="$(arg frame_id)"/>
+  </node>
+  <group if="$(arg debug)">
+    <!-- Rviz -->
+    <node name="imu_rviz" pkg="rviz" type="rviz" args="-d $(arg rviz_config)" required="true"/>
+    <!-- rqt_plot -->
+    <node name="linear_acceleration_plot" pkg="rqt_plot" type="rqt_plot" args="/$(arg imu_topic)/linear_acceleration/x:y:z"/>
+    <node name="angular_velocity_plot" pkg="rqt_plot" type="rqt_plot" args="/$(arg imu_topic)/angular_velocity/x:y:z"/>
+    <node name="orientation_plot" pkg="rqt_plot" type="rqt_plot" args="/$(arg imu_topic)/orientation/x:y:z:w"/>
+  </group>
+</launch>
