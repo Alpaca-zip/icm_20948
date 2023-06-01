@@ -8,13 +8,13 @@
   <arg name="debug" default="false"/>
   <arg name="rviz_config" default="$(find-pkg-share icm_20948)/rviz2/imu.rviz"/>
   <!-- Imu node -->
-  <!--<node pkg="icm_20948" exec="imu_node" output="screen">
+  <node pkg="icm_20948" exec="imu_node" output="screen">
     <param name="port" value="$(var port)"/>
     <param name="time_out" value="$(var time_out)"/>
     <param name="baudrate" value="$(var baudrate)"/>
     <param name="imu_topic" value="$(var imu_topic)"/>
     <param name="frame_id" value="$(var frame_id)"/>
-  </node>-->
+  </node>
   <group if="$(var debug)">
     <!-- Rviz -->
     <node pkg="rviz2" exec="rviz2" args="-d $(var rviz_config)"/>
