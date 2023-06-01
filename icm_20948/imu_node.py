@@ -1,20 +1,28 @@
 #!/usr/bin/env python
-import rospy
+import rclpy
 import struct
 import math
 import serial
-import serial.tools.list_ports
+from rclpy.node import Node
 from sensor_msgs.msg import Imu
 
 
-class ImuNode:
+class ImuNode(Node):
     def __init__(self):
+        super().__init__("imu_node")
         # Initialize parameters with default values
-        port = rospy.get_param("~port", "/dev/ttyACM0")
-        time_out = rospy.get_param("~time_out", 0.5)
-        baudrate = rospy.get_param("~baudrate", 115200)
-        imu_topic = rospy.get_param("~imu_topic", "imu")
-        self.frame_id = rospy.get_param("~frame_id", "imu_link")
+        self.declare_parameter("port", "/dev/ttyACM0")
+        self.declare_parameter("time_out", 0.5)
+        self.declare_parameter("baudrate", 115200)
+        self.declare_parameter("imu_topic", "imu")
+        self.declare_parameter("frame_id", "imu_link")
+        port = self.get_parameter("port").get_parameter_value().string_value
+        time_out = self.get_parameter("time_out").get_parameter_value().double_value
+        baudrate = self.get_parameter("baudrate").get_parameter_value().integer_value
+        imu_topic = self.get_parameter("imu_topic").get_parameter_value().string_value
+        self.frame_id = (
+            self.get_parameter("frame_id").get_parameter_value().string_value
+        )
         # Initialize other necessary variables
         self.key = 0
         self.buff = {}
@@ -25,19 +33,19 @@ class ImuNode:
         self.open_serial(port, baudrate, time_out)
         # Initialize message and publisher
         self.imu_msg = Imu()
-        self.imu_pub = rospy.Publisher(imu_topic, Imu, queue_size=10)
+        self.imu_pub = self.create_publisher(Imu, imu_topic, 10)
 
     def open_serial(self, port, baudrate, time_out):
-        rospy.loginfo("Port:%s baud:%d" % (port, baudrate))
+        self.get_logger().info("Port:%s baud:%d" % (port, baudrate))
         try:
             # Attempt to open the serial port
             self.imu_serial = serial.Serial(
                 port=port, baudrate=baudrate, timeout=time_out
             )
-            rospy.loginfo("\033[32mSerial port opened successfully!\033[0m")
+            self.get_logger().info("\033[32mSerial port opened successfully!\033[0m")
         except Exception as e:
             print(e)
-            rospy.logerr("Serial port opening failure")
+            self.get_logger().error("Serial port opening failure")
             exit(0)
 
     def control_loop(self):
@@ -46,7 +54,7 @@ class ImuNode:
             buff_count = self.imu_serial.inWaiting()
         except Exception as e:
             print(e)
-            rospy.logerr("Imu disconnect")
+            self.get_logger().error("Imu disconnect")
             exit(0)
         else:
             if buff_count > 0:
@@ -78,7 +86,7 @@ class ImuNode:
                         for i in range(0, 3)
                     ]
                 else:
-                    rospy.logwarn("0x51 Check failure")
+                    self.get_logger().warn("0x51 Check failure")
 
             elif self.buff[1] == 0x52:
                 if self.check_sum(data_buff[0:10], data_buff[10]):
@@ -91,7 +99,7 @@ class ImuNode:
                         for i in range(0, 3)
                     ]
                 else:
-                    rospy.logwarn("0x52 Check failure")
+                    self.get_logger().warn("0x52 Check failure")
 
             elif self.buff[1] == 0x53:
                 if self.check_sum(data_buff[0:10], data_buff[10]):
@@ -101,7 +109,7 @@ class ImuNode:
                     ]
                     pub_flag = True
                 else:
-                    rospy.logwarn("0x53 Check failure")
+                    self.get_logger().warn("0x53 Check failure")
 
             self.buff = {}
             self.key = 0
@@ -117,7 +125,7 @@ class ImuNode:
 
     def publish_msg(self):
         # Construct and publish the IMU message
-        self.imu_msg.header.stamp = rospy.get_rostime()
+        self.imu_msg.header.stamp = self.get_clock().now().to_msg()
         self.imu_msg.header.frame_id = self.frame_id
 
         self.imu_msg.orientation.x = self.quaternion[0]
@@ -134,8 +142,18 @@ class ImuNode:
         self.imu_pub.publish(self.imu_msg)
 
 
+def main(args=None):
+    try:
+        rclpy.init(args=args)
+        node = ImuNode()
+        while rclpy.ok():
+            node.control_loop()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        node.destroy_node()
+        rclpy.shutdown()
+
+
 if __name__ == "__main__":
-    rospy.init_node("imu_node")
-    node = ImuNode()
-    while not rospy.is_shutdown():
-        node.control_loop()
+    main()

@@ -1,18 +1,18 @@
 # ICM_20948 v2.0 [![](https://img.shields.io/badge/ROS2-humble-important?style=flat-square&logo=ros)](https://github.com/Alpaca-zip/icm_20948/tree/humble-devel) [![](https://img.shields.io/badge/ROS-noetic-blue?style=flat-square&logo=ros)](https://github.com/Alpaca-zip/icm_20948/tree/noetic-devel)
 
-ROS package for the ICM-20948 with Seeeduino XIAO.  
+ROS2 package for the ICM-20948 with Seeeduino XIAO.  
 Older version: [old-devel](https://github.com/Alpaca-zip/icm_20948/tree/old-devel)
 
 <img src="https://user-images.githubusercontent.com/84959376/218235948-b36ffe70-4e4e-4186-acaf-ef2bd89b3470.png" width="320px"> 　　　　<img src="https://github.com/Alpaca-zip/icm_20948/assets/84959376/807b0fb9-970a-4a2f-97f3-b76d624296f2" width="400px">
 
 ## 1 Installation
-### 1.1 Install ROS package
+### 1.1 Install ROS2 package
 ```
-$ cd ~/catkin_ws/src
-$ git clone -b noetic-devel https://github.com/Alpaca-zip/icm_20948.git 
-$ cd ~/catkin_ws
+$ cd ~/colcon_ws/src
+$ git clone -b humble-devel https://github.com/Alpaca-zip/icm_20948.git 
+$ cd ~/colcon_ws
 $ rosdep install -r -y -i --from-paths .
-$ catkin build
+$ colcon build
 ```
 
 ### 1.2 Download Arduino IDE
@@ -58,5 +58,5 @@ Open the “firmware/firmware.ino”. Then, simply click the `Upload` button in 
 To run the node with a different port, for example on /dev/ttyACM0, you must specify the “port” parameters on the command line:
 
 ```
-$ roslaunch icm_20948 run.launch port:=/dev/ttyACM0 debug:=true
+$ ros2 launch icm_20948 run.launch.xml port:=/dev/ttyACM0 debug:=true
 ```
