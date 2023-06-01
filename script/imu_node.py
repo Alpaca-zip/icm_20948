@@ -3,7 +3,6 @@ import rospy
 import struct
 import math
 import serial
-import serial.tools.list_ports
 from sensor_msgs.msg import Imu
 
 
