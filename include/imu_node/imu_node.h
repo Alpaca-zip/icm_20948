@@ -1,0 +1,44 @@
+#pragma once
+
+#include <rclcpp/rclcpp.hpp>
+#include <sensor_msgs/msg/imu.hpp>
+#include <serial/serial.h>
+#include <numeric>
+#include <chrono>
+
+using namespace std::chrono_literals;
+
+class ImuNode : public rclcpp::Node
+{
+private:
+  rclcpp::Publisher<sensor_msgs::msg::Imu>::SharedPtr _imu_pub;
+  std::string _port;
+  std::string _frame_id;
+  std::string _imu_topic;
+  std::vector<uint8_t> _buff;
+  sensor_msgs::msg::Imu _imu_msg;
+  serial::Serial _imu_serial;
+  int _baudrate;
+  float _time_out;
+
+  const size_t _BUFFER_SIZE = 11;
+  const uint8_t _HEADER_BYTE = 0x55;
+  const uint8_t _ACCELERATION_BYTE = 0x51;
+  const uint8_t _ANGULAR_VELOCITY_BYTE = 0x52;
+  const uint8_t _QUATERNION_BYTE = 0x53;
+
+public:
+  ImuNode();
+  void controlLoop();
+  void openSerial(const std::string& port, const int& baudrate, const float& time_out);
+  void publishMsg(const std::vector<float>& acceleration, const std::vector<float>& angular_velocity,
+                  const std::vector<float>& quaternion);
+  void processData(const uint8_t& raw_data);
+  bool checkSum(const std::vector<uint8_t>::iterator& begin, const std::vector<uint8_t>::iterator& end,
+                const uint8_t& check_data);
+  std::vector<int16_t> hexToShort(const std::vector<uint8_t>::iterator& begin,
+                                  const std::vector<uint8_t>::iterator& end);
+  std::vector<float> processAccelerationData(const std::vector<int16_t>& data);
+  std::vector<float> processAngularVelocityData(const std::vector<int16_t>& data);
+  std::vector<float> processQuaternionData(const std::vector<int16_t>& data);
+};
