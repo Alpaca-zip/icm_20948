@@ -8,6 +8,9 @@ ImuNode::ImuNode() : _pnh("~")
   _pnh.param<float>("time_out", _time_out, 0.5);
   _pnh.param<int>("baudrate", _baudrate, 115200);
   _imu_pub = _nh.advertise<sensor_msgs::Imu>(_imu_topic, 10);
+  _acceleration_flag = false;
+  _angular_velocity_flag = false;
+  _quaternion_flag = false;
   openSerial(_port, _baudrate, _time_out);
 }
 
@@ -41,15 +44,14 @@ void ImuNode::controlLoop()
   try
   {
     // Check if there is any data waiting to be read from the serial port
-    size_t buff_count = _imu_serial.available();
-    if (buff_count > 0)
+    if (_imu_serial.available())
     {
       // Read the waiting data and process it
-      std::vector<uint8_t> buff_data(buff_count);
-      _imu_serial.read(buff_data, buff_count);
-      for (size_t i = 0; i < buff_count; i++)
+      std::vector<uint8_t> buff_data;
+      _imu_serial.read(buff_data, _imu_serial.available());
+      for (const auto& byte : buff_data)
       {
-        processData(buff_data[i]);
+        processData(byte);
       }
     }
   }
@@ -65,16 +67,16 @@ void ImuNode::processData(const uint8_t& raw_data)
   // Process each byte of raw data from the serial port
   _buff.push_back(raw_data);
 
-  if (_buff[0] != _HEADER_BYTE || _buff.size() < _BUFFER_SIZE)
+  if (_buff[0] != _HEADER_BYTE)
   {
+    _buff.clear();
     return;
   }
 
-  // Compute common variables
-  std::vector<float> acceleration;
-  std::vector<float> angular_velocity;
-  std::vector<float> quaternion;
-  std::vector<int16_t> data = hexToShort(_buff.begin() + 2, _buff.begin() + _BUFFER_SIZE - 1);
+  if (_buff.size() < _BUFFER_SIZE)
+  {
+    return;
+  }
 
   if (!checkSum(_buff.begin(), _buff.begin() + _BUFFER_SIZE - 1, _buff[_BUFFER_SIZE - 1]))
   {
@@ -83,34 +85,46 @@ void ImuNode::processData(const uint8_t& raw_data)
     return;
   }
 
+  // Compute common variables
+  std::vector<uint8_t> sliced_data(_buff.begin() + 2, _buff.begin() + 10);
+  std::vector<int16_t> data = hexToShort(sliced_data);
+
   if (_buff[1] == _ACCELERATION_BYTE)
   {
     // Interpret acceleration data
-    acceleration = processAccelerationData(data);
+    _acceleration = processAccelerationData(data);
+    _acceleration_flag = true;
   }
   else if (_buff[1] == _ANGULAR_VELOCITY_BYTE)
   {
     // Interpret angular velocity data
-    angular_velocity = processAngularVelocityData(data);
+    _angular_velocity = processAngularVelocityData(data);
+    _angular_velocity_flag = true;
   }
   else if (_buff[1] == _QUATERNION_BYTE)
   {
     // Interpret quaternion data
-    quaternion = processQuaternionData(data);
-    // If successfully interpreted quaternion data, publish the message
-    publishMsg(acceleration, angular_velocity, quaternion);
+    _quaternion = processQuaternionData(data);
+    _quaternion_flag = true;
+  }
+
+  if (_acceleration_flag && _angular_velocity_flag && _quaternion_flag)
+  {
+    publishMsg(_acceleration, _angular_velocity, _quaternion);
+    _acceleration_flag = false;
+    _angular_velocity_flag = false;
+    _quaternion_flag = false;
   }
 
   _buff.clear();
   return;
 }
 
-std::vector<int16_t> ImuNode::hexToShort(const std::vector<uint8_t>::iterator& begin,
-                                         const std::vector<uint8_t>::iterator& end)
+std::vector<int16_t> ImuNode::hexToShort(const std::vector<uint8_t>& raw_data)
 {
   // Convert a list of bytes to a list of shorts
   std::vector<int16_t> result;
-  for (std::vector<uint8_t>::iterator it = begin; it + 1 != end; it += 2)
+  for (std::vector<uint8_t>::const_iterator it = raw_data.begin(); it != raw_data.end(); it += 2)
   {
     int16_t value = (static_cast<int16_t>(*(it + 1)) << 8) | *it;
     result.push_back(value);

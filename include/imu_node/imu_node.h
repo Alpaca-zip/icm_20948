@@ -15,8 +15,14 @@ private:
   std::string _frame_id;
   std::string _imu_topic;
   std::vector<uint8_t> _buff;
+  std::vector<float> _acceleration;
+  std::vector<float> _angular_velocity;
+  std::vector<float> _quaternion;
   sensor_msgs::Imu _imu_msg;
   serial::Serial _imu_serial;
+  bool _acceleration_flag;
+  bool _angular_velocity_flag;
+  bool _quaternion_flag;
   int _baudrate;
   float _time_out;
 
@@ -35,8 +41,7 @@ public:
   void processData(const uint8_t& raw_data);
   bool checkSum(const std::vector<uint8_t>::iterator& begin, const std::vector<uint8_t>::iterator& end,
                 const uint8_t& check_data);
-  std::vector<int16_t> hexToShort(const std::vector<uint8_t>::iterator& begin,
-                                  const std::vector<uint8_t>::iterator& end);
+  std::vector<int16_t> hexToShort(const std::vector<uint8_t>& raw_data);
   std::vector<float> processAccelerationData(const std::vector<int16_t>& data);
   std::vector<float> processAngularVelocityData(const std::vector<int16_t>& data);
   std::vector<float> processQuaternionData(const std::vector<int16_t>& data);
