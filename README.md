@@ -9,7 +9,9 @@ Older version: [old-devel](https://github.com/Alpaca-zip/icm_20948/tree/old-deve
 ### 1.1 Install ROS2 package
 ```
 $ cd ~/colcon_ws/src
-$ git clone -b humble-devel https://github.com/Alpaca-zip/icm_20948.git 
+$ git clone -b humble-devel https://github.com/Alpaca-zip/icm_20948.git
+$ wstool merge icm_20948/icm_20948.rosinstall
+$ wstool update
 $ cd ~/colcon_ws
 $ rosdep install -r -y -i --from-paths .
 $ colcon build
