@@ -26,6 +26,7 @@ install(TARGETS
 
 install(DIRECTORY
   launch
+  rviz2
   DESTINATION share/${PROJECT_NAME})
 
 ament_package()
