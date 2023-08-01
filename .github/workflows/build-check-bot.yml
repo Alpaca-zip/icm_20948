@@ -16,6 +16,6 @@ jobs:
     - name: Build
       uses: ros-tooling/action-ros-ci@v0.3
       with:
-        package-name: icm_20948 serial
+        package-name: icm_20948
         target-ros1-distro: noetic
         skip-tests: true
