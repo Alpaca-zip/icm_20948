@@ -19,4 +19,3 @@ jobs:
         package-name: icm_20948 serial
         target-ros1-distro: noetic
         skip-tests: true
-        vcs-repo-file-url: "${{ github.workspace }}/icm_20948.rosinstall"
