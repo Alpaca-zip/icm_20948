@@ -1,4 +1,4 @@
-# ICM_20948 v2.0 [![](https://img.shields.io/badge/ROS2-humble-important?style=flat-square&logo=ros)](https://github.com/Alpaca-zip/icm_20948/tree/humble-devel) [![](https://img.shields.io/badge/ROS-noetic-blue?style=flat-square&logo=ros)](https://github.com/Alpaca-zip/icm_20948/tree/noetic-devel)
+# ICM_20948 v2.0 [![ROS-noetic Build Check](https://github.com/Alpaca-zip/icm_20948/actions/workflows/ros1-build-check-bot.yml/badge.svg?event=pull_request)](https://github.com/Alpaca-zip/icm_20948/actions/workflows/ros1-build-check-bot.yml)
 
 ROS package for the ICM-20948 with Seeeduino XIAO.  
 Older version: [old-devel](https://github.com/Alpaca-zip/icm_20948/tree/old-devel)
