@@ -1,15 +1,21 @@
-/****************************************************************
- * This script is based on Example10_DMP_FastMultipleSensors.ino in the ICM 20948 Arduino Library.
- * 
- * ** Important note: by default the DMP functionality is disabled in the library
- * ** as the DMP firmware takes up 14301 Bytes of program memory.
- * ** To use the DMP, you will need to:
- * ** Edit ICM_20948_C.h
- * ** Uncomment line 29: #define ICM_20948_USE_DMP
- * ** Save changes
- * ** If you are using Windows, you can find ICM_20948_C.h in:
- * ** Documents\Arduino\libraries\SparkFun_ICM-20948_ArduinoLibrary\src\util
- ***************************************************************/
+/*
+  This script is based on Example10_DMP_FastMultipleSensors.ino in the ICM 20948 Arduino Library.
+  https://github.com/sparkfun/SparkFun_ICM-20948_ArduinoLibrary
+
+  Copyright 2023 Alapaca-zip
+
+  This software is released under the MIT License.
+  http://opensource.org/licenses/mit-license.php
+
+  ** Important note: by default the DMP functionality is disabled in the library
+  ** as the DMP firmware takes up 14301 Bytes of program memory.
+  ** To use the DMP, you will need to:
+  ** Edit ICM_20948_C.h
+  ** Uncomment line 29: #define ICM_20948_USE_DMP
+  ** Save changes
+  ** If you are using Windows, you can find ICM_20948_C.h in:
+  ** Documents\Arduino\libraries\SparkFun_ICM-20948_ArduinoLibrary\src\util
+*/
 
 #define USE_USBCON // seeeduino xiao needs this flag to be defined
 #define SERIAL_PORT Serial
