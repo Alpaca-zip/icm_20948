@@ -1,3 +1,10 @@
+/*
+  Copyright 2023 Alapaca-zip
+
+  This software is released under the MIT License.
+  http://opensource.org/licenses/mit-license.php
+*/
+
 #include "imu_node/imu_node.h"
 
 ImuNode::ImuNode() : _pnh("~")
