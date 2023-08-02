@@ -7,15 +7,15 @@ jobs:
   build:
     runs-on: ubuntu-22.04
     steps:
-    - name: Checkout
+    - name: checkout
       uses: actions/checkout@v2
       with:
         ref: ${{ github.head_ref }}
-    - name: Setup ROS2
+    - name: setup ROS2
       uses: ros-tooling/setup-ros@v0.6
       with:
         required-ros-distributions: humble
-    - name: Build
+    - name: build
       uses: ros-tooling/action-ros-ci@v0.3
       with:
         package-name: icm_20948 serial
