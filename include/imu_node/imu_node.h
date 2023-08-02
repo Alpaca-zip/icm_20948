@@ -10,6 +10,7 @@
 #include <ros/ros.h>
 #include <sensor_msgs/Imu.h>
 #include <serial/serial.h>
+
 #include <numeric>
 
 class ImuNode
@@ -42,14 +43,16 @@ private:
 public:
   ImuNode();
   void controlLoop();
-  void openSerial(const std::string& port, const int& baudrate, const float& time_out);
-  void publishMsg(const std::vector<float>& acceleration, const std::vector<float>& angular_velocity,
-                  const std::vector<float>& quaternion);
-  void processData(const uint8_t& raw_data);
-  bool checkSum(const std::vector<uint8_t>::iterator& begin, const std::vector<uint8_t>::iterator& end,
-                const uint8_t& check_data);
-  std::vector<int16_t> hexToShort(const std::vector<uint8_t>& raw_data);
-  std::vector<float> processAccelerationData(const std::vector<int16_t>& data);
-  std::vector<float> processAngularVelocityData(const std::vector<int16_t>& data);
-  std::vector<float> processQuaternionData(const std::vector<int16_t>& data);
+  void openSerial(const std::string & port, const int & baudrate, const float & time_out);
+  void publishMsg(
+    const std::vector<float> & acceleration, const std::vector<float> & angular_velocity,
+    const std::vector<float> & quaternion);
+  void processData(const uint8_t & raw_data);
+  bool checkSum(
+    const std::vector<uint8_t>::iterator & begin, const std::vector<uint8_t>::iterator & end,
+    const uint8_t & check_data);
+  std::vector<int16_t> hexToShort(const std::vector<uint8_t> & raw_data);
+  std::vector<float> processAccelerationData(const std::vector<int16_t> & data);
+  std::vector<float> processAngularVelocityData(const std::vector<int16_t> & data);
+  std::vector<float> processQuaternionData(const std::vector<int16_t> & data);
 };
